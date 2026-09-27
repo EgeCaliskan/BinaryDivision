@@ -1,0 +1,3 @@
+[submodule "FPGAMakefile"]
+	path = FPGAMakefile
+	url = https://github.com/EgeCaliskan/FPGAMakefile

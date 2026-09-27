@@ -1,0 +1,47 @@
+digraph ASMD{
+        subgraph cluster_IDLE{
+                style = dashed
+                label = "IDLE"
+
+                IDLE[shape = rectangle, label = ""]
+                IDLE_check[shape = diamond, label ="Start == 1?"]
+                IDLE_assign[nojustify = true label = "
+                    Divisor <- {0, Divisor_in, 000}\l\
+                    Dividend <- {0000, Dividend_in}\l\
+                    Res <- 0000\l\
+                    Cntr <- 000\l\
+                    Remainder_out <- 0000\l\
+                    Res_out <- 0000\l\ "]
+
+                    IDLE -> IDLE_check
+                    IDLE_check -> IDLE_assign[label = "T"]
+                    IDLE_check -> IDLE[label = "F"]
+
+            }
+        subgraph cluster_WORKING{
+                style = dashed 
+                label = "WORKING"
+
+                WORKING[shape = rectangle, label = "Divisor_SHR\nCntr_INC"]
+                WORKING_check[shape = diamond, label = "Cntr < 4?"]
+                WORKING_check2[shape = diamond, label = "Dividend >= Divisor?"]
+                WORKING_check2_T[label = "Res_SHL_1\nDividend <- Dividend - Divisor"]
+                WORKING_check2_F[label = "Res_SHL_0"]
+
+                WORKING -> WORKING_check 
+                WORKING_check -> WORKING_check2[label = "T"]
+                WORKING_check2 -> WORKING_check2_T[label = "T"]
+                WORKING_check2 -> WORKING_check2_F[label = "F"]
+                WORKING_check2_T -> WORKING
+                WORKING_check2_F -> WORKING
+            }
+        subgraph cluster_DONE{
+                style = dashed 
+                label = "DONE"
+
+                DONE[shape = rectangle, label = "Res_out <- Res\n Remainder_out <- Dividend[3:0]"]
+            }
+    IDLE_assign -> WORKING
+    WORKING_check -> DONE[label = "F"]
+    DONE -> IDLE
+    }
