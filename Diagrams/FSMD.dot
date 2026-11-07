@@ -1,0 +1,43 @@
+digraph ASMD{
+        subgraph cluster_IDLE{
+                style = dashed
+                label = "IDLE"
+                IDLE[shape = rectangle, label = ""]
+                IDLE_check[shape = diamond, label ="Start == 1?"]
+                IDLE_assign[label = "Divisor <- {0,DivisorInput,000}\nDividend <- DividendInput"]
+                IDLE -> IDLE_check
+                IDLE_check -> IDLE_assign[label = "T"]
+                IDLE_check -> IDLE[label = "F"]
+                
+            }
+
+        subgraph cluster_WORKING{
+                style = dashed 
+                label = "WORKING"
+
+                WORKING[shape = rectangle, label = "DivisorShift"]
+
+                WORKING_checkDone[shape = diamond, label = "QuotientDone"]
+                WORKING_checkGEQ[shape = diamond, label = "QuotientGEQ"]
+
+                WORKING_mealySubtract[label = "QuotientSubtract\nQuotientShift1"]
+                WORKING_mealyNoSubtract[label = "QuotientShift0"]
+
+                WORKING -> WORKING_checkDone[]
+                WORKING_checkDone -> WORKING_checkGEQ[label = "F"]
+
+                WORKING_checkGEQ -> WORKING_mealySubtract[label = "T"]
+                WORKING_checkGEQ -> WORKING_mealyNoSubtract[label = "F"]
+                WORKING_mealySubtract -> WORKING
+                WORKING_mealyNoSubtract -> WORKING
+            }
+        subgraph cluster_DONE{
+                style = dashed
+                label = "DONE"
+
+                DONE[shape = rectangle, label = "ResQuotient = Quotient\nResRemainder = Dividend\nIsDone = 1"]
+            }
+    IDLE_assign -> WORKING
+    DONE -> IDLE
+    WORKING_checkDone -> DONE[label = "T"]
+    }

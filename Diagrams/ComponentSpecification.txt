@@ -1,0 +1,37 @@
+4BitRS: Simple right shift register of 4 bits. (Used for Divisor)
+    INPUT_4: loadVal
+    INPUT: load
+    INPUT: rShift
+    OUTPUT_4: outputVal
+
+8BitRS: Advanced right shift register with additional features. (Used for Dividend)
+    INPUT_4: inputVal
+    INPUT_8: loadVal
+    INPUT: load
+    INPUT: rShift
+    INPUT: subtract
+    OUTPUT_8: outputVal
+    OUTPUT: checkGEQ
+
+    --- FUNCTIONALITY ---
+    IF subtract high -> subtract inputVal from stored value, then store the result.
+    checkGEQ Output -> 1 if stored value >= inputVal, 0 otherwise.
+    load -> stored loadVal (syncronous)
+    rShift -> right shifts the stored value.
+
+4BitLS: Simple left shift register of 4-bits, with an additional counter bit. (Used for Quotient)
+    INPUT: reset
+    INPUT: lShift0
+    INPUT: lShift1
+    OUTPUT_4: outputVal
+    OUTPUT: counter
+
+    -- FUNCTIONALITY ---
+    lShift0 -> If HIGH, left shifts the stored values, newly added rightmost value = 0.
+    lShift1 -> If HIGH, left shifts the stored values, newly added rightmost value = 1.
+    reset -> sets the internal value to 00001. The 1 acts as a counter, tracking the number 
+    of times that left shits have ocurred. Once we have 4 left shifts, the one moves to the 
+    leftmost bit and triggers the counter.
+    counter -> Triggered by the procedure shown above.
+    outputVal -> the rightmost 4 bits of our stored value.
+
